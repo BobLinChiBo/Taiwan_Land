@@ -1,0 +1,24 @@
+{\rtf1\fs24
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx4032\clbrdrt\brdrs\cellx4608\clbrdrt\brdrs\cellx6048\clbrdrt\brdrs\cellx7488\clbrdrt\brdrs\cellx8928\clbrdrt\brdrs\cellx10368
+\ql \cell\qc (1)\cell\qc (2)\cell\qc (3)\cell\qc (4)\cell\qc (5)\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx4032\cellx4608\cellx6048\cellx7488\cellx8928\cellx10368
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx4032\clbrdrb\brdrs\cellx4608\clbrdrb\brdrs\cellx6048\clbrdrb\brdrs\cellx7488\clbrdrb\brdrs\cellx8928\clbrdrb\brdrs\cellx10368
+\ql VARIABLES\cell\qc N\cell\qc mean\cell\qc sd\cell\qc min\cell\qc max\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx4032\cellx4608\cellx6048\cellx7488\cellx8928\cellx10368
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
+\ql year\cell\qc 22\cell\qc 1,956\cell\qc 0\cell\qc 1,956\cell\qc 1,956\cell\row
+\ql tenant_area_change\cell\qc 22\cell\qc 7,108\cell\qc 6,312\cell\qc -990.4\cell\qc 21,858\cell\row
+\ql tenant_area\cell\qc 22\cell\qc 4,221\cell\qc 3,340\cell\qc 215.7\cell\qc 12,272\cell\row
+\ql common_crop_value\cell\qc 22\cell\qc 2.781e+08\cell\qc 2.315e+08\cell\qc 7.214e+06\cell\qc 8.666e+08\cell\row
+\ql ln_common_crop_value\cell\qc 22\cell\qc 18.86\cell\qc 1.379\cell\qc 15.79\cell\qc 20.58\cell\row
+\ql special_crop_value\cell\qc 22\cell\qc 8.102e+07\cell\qc 8.949e+07\cell\qc 331,890\cell\qc 3.006e+08\cell\row
+\ql ln_special_crop_value\cell\qc 22\cell\qc 17.19\cell\qc 1.957\cell\qc 12.71\cell\qc 19.52\cell\row
+\ql horticultural_crop_value\cell\qc 22\cell\qc 3.159e+07\cell\qc 2.294e+07\cell\qc 2.229e+06\cell\qc 8.304e+07\cell\row
+\ql ln_horticultural_crop_value\cell\qc 22\cell\qc 16.89\cell\qc 1.028\cell\qc 14.62\cell\qc 18.23\cell\row
+\ql after_reform\cell\qc 22\cell\qc 1\cell\qc 0\cell\qc 1\cell\qc 1\cell\row
+\ql region_code\cell\qc 22\cell\qc 11.50\cell\qc 6.494\cell\qc 1\cell\qc 22\cell\row
+\ql tenant_area_1952\cell\qc 22\cell\qc 11,328\cell\qc 9,417\cell\qc 380.7\cell\qc 31,506\cell\row
+\ql after_tenant_area_1952\cell\qc 22\cell\qc 11,328\cell\qc 9,417\cell\qc 380.7\cell\qc 31,506\cell\row
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx4032\clbrdrb\brdrs\cellx4608\clbrdrb\brdrs\cellx6048\clbrdrb\brdrs\cellx7488\clbrdrb\brdrs\cellx8928\clbrdrb\brdrs\cellx10368
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
+}

@@ -1,0 +1,22 @@
+	(1)	(2)	(3)	(4)	(5)
+VARIABLES	N	mean	sd	min	max
+					
+year	22	1,953	0	1,953	1,953
+tenant_area_change	22	6,385	5,934	-1,068	21,575
+tenant_area	22	4,943	3,852	247.9	13,835
+common_crop_value	22	2.445e+08	2.100e+08	4.558e+06	8.101e+08
+ln_common_crop_value	22	18.72	1.378	15.33	20.51
+special_crop_value	22	7.446e+07	8.404e+07	209,926	2.841e+08
+ln_special_crop_value	22	17.11	1.946	12.25	19.46
+horticultural_crop_value	22	2.057e+07	1.471e+07	1.873e+06	4.991e+07
+ln_horticultural_crop_value	22	16.50	0.955	14.44	17.73
+area	22	35,381	28,305	0	98,152
+rice_yield	22	7.462e+07	6.295e+07	0	2.343e+08
+rice_value	22	2.081e+08	1.816e+08	0	7.030e+08
+rice_yield_per_ha	22	1,952	576.3	0	2,636
+after_reform	22	1	0	1	1
+region_code	22	11.50	6.494	1	22
+tenant_area_1952	22	11,328	9,417	380.7	31,506
+after_tenant_area_1952	22	11,328	9,417	380.7	31,506
+					
+Number of region_code	21	21	21	21	21
