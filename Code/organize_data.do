@@ -66,6 +66,44 @@ replace tenant_area_change = -tenant_area_change
 bysort region_code (year): gen tenant_area_1952 = tenant_area[1]
 gen after_tenant_area_1952 = after_reform * tenant_area_1952
 
+gen ln_rice_yield = ln(rice_yield)
+gen ln_rice_yield_per_ha = ln(rice_yield_per_ha)
+
+gen total_rice_value1951 = 1507784105
+bysort year: egen total_rice_value = total(rice_value)
+gen rice_price_index = 100* (total_rice_value/total_rice_value1951)/105.8 if year == 1952
+replace rice_price_index = 100* (total_rice_value/total_rice_value1951)/110.6 if year == 1953
+replace rice_price_index = 100* (total_rice_value/total_rice_value1951)/120.5 if year == 1956
+
+gen total_common_value1951 =  3773765053 
+gen total_common_ex_rice_value1951 =  total_common_value1951 - total_rice_value1951
+bysort year: egen total_common_value = total(common_crop_value)
+gen common_ex_rice_value = common_crop_value - rice_value
+gen total_common_ex_rice_value = total_common_value - total_rice_value
+gen common_ex_rice_price_index = 100* (total_common_ex_rice_value/total_common_ex_rice_value1951)/101.8 if year == 1952
+replace common_ex_rice_price_index = 100* (total_common_ex_rice_value/total_common_ex_rice_value1951)/113.2 if year == 1953
+replace common_ex_rice_price_index = 100* (total_common_ex_rice_value/total_common_ex_rice_value1951)/137.1 if year == 1956
+
+gen total_special_value1951 = 748338763 
+bysort year: egen total_special_value = total(special_crop_value)
+gen special_price_index = 100* (total_special_value/total_special_value1951)/125 if year == 1952
+replace special_price_index = 100* (total_special_value/total_special_value1951)/169.1 if year == 1953
+replace special_price_index = 100* (total_special_value/total_special_value1951)/157.0 if year == 1956
+
+gen adjust_rice_value = rice_value / rice_price_index
+gen adjust_common_ex_rice_value = common_ex_rice_value / common_ex_rice_price_index
+gen adjust_special_value = special_crop_value / special_price_index
+*gen adjust_horticultural_crop_value = horticultural_crop_value / wholesale_price_index
+gen ln_rice_value = ln(rice_value)
+gen ln_common_ex_rice_value = ln(common_ex_rice_value)
+gen ln_adjust_rice_value = ln(adjust_rice_value)
+gen ln_adjust_common_ex_rice_value = ln(adjust_common_ex_rice_value)
+gen ln_adjust_special_value = ln(adjust_special_value)
+*gen ln_adjust_horticultural_crop_value = ln(adjust_horticultural_crop_value)
+
+
+
+
 save "./Data_Modified/organized_data.dta", replace
 
 local years 1952 1953 1956

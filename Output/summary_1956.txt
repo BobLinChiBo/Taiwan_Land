@@ -18,5 +18,27 @@ after_reform	22	1	0	1	1
 region_code	22	11.50	6.494	1	22
 tenant_area_1952	22	11,328	9,417	380.7	31,506
 after_tenant_area_1952	22	11,328	9,417	380.7	31,506
+ln_rice_yield	21	17.75	1.295	14.28	19.43
+ln_rice_yield_per_ha	21	7.712	0.183	7.231	7.966
+total_rice_value1951	22	1.508e+09	0	1.508e+09	1.508e+09
+total_rice_value	22	4.786e+09	0	4.786e+09	4.786e+09
+rice_price_index	22	2.634	0	2.634	2.634
+total_common_value1951	22	3.774e+09	0	3.774e+09	3.774e+09
+total_common_ex_rice_value1951	22	2.266e+09	0	2.266e+09	2.266e+09
+total_common_value	22	6.117e+09	0	6.117e+09	6.117e+09
+common_ex_rice_value	22	6.052e+07	6.182e+07	1.495e+06	2.168e+08
+total_common_ex_rice_value	22	1.331e+09	0	1.331e+09	1.331e+09
+common_ex_rice_price_index	22	0.429	0	0.429	0.429
+total_special_value1951	22	7.483e+08	0	7.483e+08	7.483e+08
+total_special_value	22	1.782e+09	0	1.782e+09	1.782e+09
+special_price_index	22	1.517	0	1.517	1.517
+adjust_rice_value	22	8.259e+07	6.997e+07	0	2.735e+08
+adjust_common_ex_rice_value	22	1.412e+08	1.443e+08	3.489e+06	5.059e+08
+adjust_special_value	22	5.340e+07	5.899e+07	218,766	1.982e+08
+ln_rice_value	21	18.74	1.283	15.28	20.40
+ln_common_ex_rice_value	22	17.25	1.392	14.22	19.19
+ln_adjust_rice_value	21	17.77	1.283	14.31	19.43
+ln_adjust_common_ex_rice_value	22	18.10	1.392	15.07	20.04
+ln_adjust_special_value	22	16.77	1.957	12.30	19.10
 					
 Number of region_code	21	21	21	21	21
