@@ -1,18 +1,42 @@
 *import excel "./Data_Raw/total_land_area1951.xlsx", sheet("Sheet1") firstrow clear
 *save "./Data_Modified/total_land_area1951.dta", replace
 
+cap program drop load_sheets
+program define load_sheets
+	local path `1'
+	local sheet_names `2'
+	local col_names `3'
+	local i `4'
+	local j `5'
+	local name `6'
+	foreach sheet_name in `sheet_names' {
+		import excel `path', sheet(`sheet_name') firstrow clear
+		foreach col_name in `col_names'{
+		    rename `col_name' `col_name'`sheet_name'
+		}
+		save "./Data_Modified/`name'`sheet_name'.dta", replace
+	}
+	foreach sheet_name in `sheet_names' {
+		merge 1:1 `i' using "./Data_Modified/`name'`sheet_name'.dta", nogenerate  
+	}
+	di "`col_names'"
+	reshape long `col_names', i(`i') j(`j')
+	save "./Data_Modified/`name'.dta", replace
+end
+
+*** general value
+local years 1950 1951 1952 1953 1954 1955 1956
+local main_types total_value common_crop_value special_crop_value horticultural_crop_value sericulture_value livestock_value
+load_sheets "./Data_Raw/general/general_value.xlsx" "`years'" "`main_types'" "region" "year" "general_value"   
+
+
 *** Rice
-local years 1952 1953 1956
+local years 1950 1951 1952 1953 1954 1955 1956
 foreach year in `years' {
-	import excel "C:\Users\boblin\Documents\GitHub\Taiwan_Land\Data_Raw\Rise.xlsx", sheet("`year'") firstrow clear
-	replace A = usubstr(A,1, ustrpos(A,"_first") - 1) if ustrpos(A,"_first") != 0
-	replace A = usubstr(A,1, ustrpos(A,"_second") - 1) if ustrpos(A,"_second") != 0
-	rename A region
-	quietly describe, varlist
-	local vars `r(varlist)'
-	local omit region
-	local want : list vars - omit
-	collapse (sum) `want' ,by(region)
+	import excel "./Data_Raw/common_crop/rice/rice.xlsx", sheet("`year'") firstrow clear
+	replace region = usubstr(region, 1, ustrpos(region, "_first") - 1) if ustrpos(region,"_first") != 0
+	replace region = usubstr(region, 1, ustrpos(region, "_second") - 1) if ustrpos(region,"_second") != 0
+	collapse (sum) area_ha yield_kg value ,by(region)
 	keep region area_ha yield_kg value
 	rename area_ha area`year'
 	rename yield_kg rice_yield`year'
@@ -27,20 +51,49 @@ reshape long rice_yield rice_value area, i(region) j(year)
 gen rice_yield_per_ha = rice_yield / area  
 save "./Data_Modified/rice.dta", replace
 
-local crop_types common_crop_value special_crop_value horticultural_crop_value
-foreach crop_type in `crop_types' {
-	import excel "./Data_Raw/`crop_type'.xlsx", sheet("Sheet1") firstrow clear
-	reshape long `crop_type', i(region) j(year)
-	save "./Data_Modified/`crop_type'.dta", replace
+
+*** each agriculture product
+local years 1950 1951 1952 1953 1954 1955 1956
+local main_vars area_ha yield_kg value
+local common_crops ........
+foreach crop in `common_crops' {
+	load_sheets "./Data_Raw/common_crop/common_exclude_rice/`crop'.xlsx" "`years'" "`main_vars'" "region" "year" "`crop'"   
+}
+local special_crops .......
+foreach crop in `special_crops' {
+	load_sheets "./Data_Raw/common_crop/special_crop/`crop'.xlsx" "`years'" "`main_vars'" "region" "year" "`crop'"   
+}
+local vegetables .......
+foreach crop in `vegetables' {
+	load_sheets "./Data_Raw/common_crop/horticultural_crop/vegetable/`crop'.xlsx" "`years'" "`main_vars'" "region" "year" "`crop'"   
+}
+local fruits .......
+foreach crop in `fruits' {
+	load_sheets "./Data_Raw/common_crop/horticultural_crop/fruit/`crop'.xlsx" "`years'" "`main_vars'" "region" "year" "`crop'"   
 }
 
-import excel "./Data_Raw/tenant_area.xlsx", sheet("Sheet1") firstrow clear
-reshape long tenant_area, i(region) j(year)
-save "./Data_Modified/tenant_area.dta", replace
-
-import excel "./Data_Raw/tenant_area_change.xlsx", sheet("Sheet1") firstrow clear
-reshape long tenant_area_change, i(region) j(year)
-save "./Data_Modified/tenant_area_change.dta", replace
+*** tenant cultivated area
+local years 1952 1953 1956
+foreach year in `years' {
+	import excel "./Data_Raw/land/tenant_contract.xlsx", sheet("`year'") firstrow clear
+	keep tenant_number total_area paddy_field dry_land
+	rename tenant_number tenant_number`year'
+	rename total_area tenant_area`year'
+	rename paddy_field paddy_field_tenant_area`year'
+	rename dry_land dry_land_tenant_area`year'
+	save "./Data_Modified/tenant_area`year'.dta", replace
+}
+foreach year in `years' {
+	merge 1:1 region using "./Data_Modified/tenant_area`year'.dta", nogenerate  
+}
+reshape long tenant_number tenant_area paddy_field_tenant_area dry_land_tenant_area, i(region) j(year)
+bysort region year: gen tenant_area_1952 = tenant_area[1]
+bysort region year: gen paddy_field_tenant_area_1952 = paddy_field_tenant_area[1]
+bysort region year: gen dry_land_tenant_area_1952 = dry_land_tenant_area[1]
+gen tenant_area_change = tenant_area - tenant_area_1952
+gen paddy_field_tenant_area_change = paddy_field_tenant_area - paddy_field_tenant_area_1952
+gen dry_land_tenant_area_change = dry_land_tenant_area - dry_land_tenant_area_1952
+save "./Data_Modified/tenant.dta", replace
 
 
 **** Merge
