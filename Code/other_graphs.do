@@ -1,3 +1,10 @@
+import excel "./Data_Raw/land/tenant_contract.xlsx", sheet("tenant_area") firstrow clear
+line Total year, xlabel(#7)
+
+
+
+
+
 import delimited "./Data_Raw/global_2020/gni_per_capita_usd_2020.csv", clear
 save "./Data_Raw/global_2020/gni_per_capita_usd_2020.dta", replace
 import delimited "./Data_Raw/global_2020/agriculture_percentage_2020.csv", clear
