@@ -30,7 +30,7 @@ foreach crop in `crop_list' {
 	collect style header colname, level(label)
 	collect style row stack, spacer delimiter(" x ")
 	collect label levels colname ///
-		after_share_tenant_area_change "After 1953 x Percentage Decrease in Tenant Area in 1953" ///
+		after_share_tenant_area_change "After 1953 x Percentage Decrease in Tenant Area during 1953" ///
 		total_farmer_number "Number of Farmers in the District" ///
 		irrigation "Irrigated Area in the District" ///
 		after_reform "After 1953 (Treatment Year)" ///
@@ -41,7 +41,8 @@ foreach crop in `crop_list' {
 		r2 "R2" ///
 		, modify
 	collect style cell result[N], nformat(%4.0f)
-	collect export "./Output/`crop'_pool_result.xlsx", as(xlsx) replace
+	collect export "./Output/`crop'_pool_result.xlsx", replace
+	collect export "./Output/`crop'_pool_result.pdf", replace
 	
 *** By Year
 	collect clear
@@ -67,7 +68,7 @@ foreach crop in `crop_list' {
 	collect label levels colname ///
 		total_farmer_number "Number of Farmers in the District" ///
 		irrigation "Irrigated Area in the District" ///
-		share_tenant_area_change_in_1953 "Percentage Decrease in Tenant Area in 1953" ///
+		share_tenant_area_change_in_1953 "Percentage Decrease in Tenant Area during 1953" ///
 		, replace
 	collect label levels result ///
 		has_panel "Regional Fixed Effects" ///
@@ -76,10 +77,13 @@ foreach crop in `crop_list' {
 		r2 "R2" ///
 		, modify
 	collect style cell result[N], nformat(%4.0f)
-	collect export "./Output/`crop'_year_result.xlsx", as(xlsx) replace
+	collect export "./Output/`crop'_year_result.xlsx", replace
+	collect export "./Output/`crop'_year_result.pdf", replace
 } 
 restore
 
+
+*** sugarcane with dry
 preserve
 drop if year == 1953 // Treatment year
 drop if region_code == 9 // Penghu_prefecture
@@ -104,7 +108,7 @@ drop if region_code == 9 // Penghu_prefecture
 	collect style header colname, level(label)
 	collect style row stack, spacer delimiter(" x ")
 	collect label levels colname ///
-		after_share_dry_area_change "After 1953 x Percentage Decrease in Dry Tenant Area in 1953" ///
+		after_share_dry_area_change "After 1953 x Percentage Decrease in Dry Tenant Area during 1953" ///
 		total_farmer_number "Number of Farmers in the District" ///
 		irrigation "Irrigated Area in the District" ///
 		after_reform "After 1953 (Treatment Year)" ///
@@ -115,7 +119,8 @@ drop if region_code == 9 // Penghu_prefecture
 		r2 "R2" ///
 		, modify
 	collect style cell result[N], nformat(%4.0f)
-	collect export "./Output/sugarcane_pool_dry_result.xlsx", as(xlsx) replace
+	collect export "./Output/sugarcane_pool_dry_result.xlsx", replace
+	collect export "./Output/sugarcane_pool_dry_result.pdf", replace
 	
 *** By Year
 	collect clear
@@ -141,7 +146,7 @@ drop if region_code == 9 // Penghu_prefecture
 	collect label levels colname ///
 		total_farmer_number "Number of Farmers in the District" ///
 		irrigation "Irrigated Area in the District" ///
-		share_dry_area_change_in_1953 "Percentage Decrease in Dry Tenant Area in 1953" ///
+		share_dry_area_change_in_1953 "Percentage Decrease in Dry Tenant Area during 1953" ///
 		, replace
 	collect label levels result ///
 		has_panel "Regional Fixed Effects" ///
@@ -150,10 +155,88 @@ drop if region_code == 9 // Penghu_prefecture
 		r2 "R2" ///
 		, modify
 	collect style cell result[N], nformat(%4.0f)
-	collect export "./Output/sugarcane_year_dry_result.xlsx", as(xlsx) replace
+	collect export "./Output/sugarcane_year_dry_result.xlsx", replace
+	collect export "./Output/sugarcane_year_dry_result.pdf", replace
 restore
 
 
+
+
+*** rice with paddy
+preserve
+drop if year == 1953 // Treatment year
+drop if region_code == 9 // Penghu_prefecture
+*** Pool
+	collect clear
+	collect _r_b _r_se has_panel="YES", tag(model["`crop' 1"]): ///
+	xtreg rice_total_yield_per_ha after_reform after_share_paddy_area_change, fe robust
+	collect _r_b _r_se has_panel="YES", tag(model["`crop' 2"]): ///
+	xtreg rice_total_yield_per_ha total_farmer_number after_reform after_share_paddy_area_change, fe robust
+	collect _r_b _r_se has_panel="YES", tag(model["`crop' 3"]): ///
+	xtreg rice_total_yield_per_ha total_farmer_number irrigation after_reform after_share_paddy_area_change, fe robust
+	collect layout (colname#result) (model)
+	collect style showbase off
+	collect style cell, border(right, pattern(nil)) //nformat(%5.2f) 
+	collect style cell result[_r_se], sformat("(%s)")
+	collect style cell cell_type[item column-header], halign(center)
+	collect style header result, level(hide)
+	collect style column, extraspace(1)
+	collect stars _r_p 0.01 "***" 0.05 "** " 0.1 "*  " 1 "   ", attach(_r_b) 
+	collect layout (colname[after_share_paddy_area_change after_reform total_farmer_number irrigation]#result[_r_b _r_se] result[has_panel r2 N]) (model)
+	collect style header result[has_panel r2 N], level(label)
+	collect style header colname, level(label)
+	collect style row stack, spacer delimiter(" x ")
+	collect label levels colname ///
+		after_share_paddy_area_change "After 1953 x Percentage Decrease in Paddy Tenant Area during 1953" ///
+		total_farmer_number "Number of Farmers in the District" ///
+		irrigation "Irrigated Area in the District" ///
+		after_reform "After 1953 (Treatment Year)" ///
+		, replace
+	collect label levels result ///
+		has_panel "Regional fixed effects" ///
+		N "N" ///
+		r2 "R2" ///
+		, modify
+	collect style cell result[N], nformat(%4.0f)
+	collect export "./Output/rice_pool_paddy_result.xlsx", replace
+	collect export "./Output/rice_pool_paddy_result.pdf",replace
+	
+*** By Year
+	collect clear
+	collect _r_b _r_se has_panel="YES" has_year_fe="YES", tag(model["`crop' (year) 1"]): ///
+	xtreg rice_total_yield_per_ha i.year##c.share_paddy_area_change_in_1953, fe robust
+	collect _r_b _r_se has_panel="YES" has_year_fe="YES", tag(model["`crop' (year) 2"]): ///
+	xtreg rice_total_yield_per_ha total_farmer_number i.year##c.share_paddy_area_change_in_1953, fe robust
+	collect _r_b _r_se has_panel="YES" has_year_fe="YES", tag(model["`crop' (year) 3"]): ///
+	xtreg rice_total_yield_per_ha total_farmer_number irrigation i.year##c.share_paddy_area_change_in_1953, fe robust
+
+	collect layout (colname#result) (model)
+	collect style showbase off
+	collect style cell, border(right, pattern(nil)) //nformat(%5.2f) 
+	collect style cell result[_r_se], sformat("(%s)")
+	collect style cell cell_type[item column-header], halign(center)
+	collect style header result, level(hide)
+	collect style column, extraspace(1)
+	collect stars _r_p 0.01 "***" 0.05 "** " 0.1 "*  " 1 "   ", attach(_r_b) 
+	collect layout (colname[after_reform total_farmer_number irrigation i.year#c.share_paddy_area_change_in_1953]#result[_r_b _r_se] result[has_panel has_year_fe r2 N]) (model)
+	collect style header result[has_panel has_year_fe r2 N], level(label)
+	collect style header colname, level(label)
+	collect style row stack, spacer delimiter(" x ")
+	collect label levels colname ///
+		total_farmer_number "Number of Farmers in the District" ///
+		irrigation "Irrigated Area in the District" ///
+		share_paddy_area_change_in_1953 "Percentage Decrease in Paddy Tenant Area during 1953" ///
+		, replace
+	collect label levels result ///
+		has_panel "Regional Fixed Effects" ///
+		has_year_fe "Year Fixed Effects" ///
+		N "N" ///
+		r2 "R2" ///
+		, modify
+	collect style cell result[N], nformat(%4.0f)
+	collect export "./Output/rice_year_paddy_result.xlsx", replace
+	collect export "./Output/rice_year_paddy_result.pdf", replace
+restore
 
 
 

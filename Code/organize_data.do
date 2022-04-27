@@ -133,8 +133,8 @@ drop if region == "Total"
 save "./Data_Modified/tenant.dta", replace
 
 *** others
-import excel "./Data_Raw/land/tenant_area_bought.xlsx", sheet("Sheet1") firstrow clear
-save "./Data_Modified/tenant_area_bought.dta", replace
+import excel "./Data_Raw/land/total_tenant_area.xlsx", sheet("Sheet1") firstrow clear
+save "./Data_Modified/total_tenant_area", replace
 
 local years 1950 1952 1953 1954 1955 1956
 load_sheets "./Data_Raw/land/irrigation.xlsx" "`years'" "irrigation" "region" "year" "irrigation" 
@@ -163,7 +163,7 @@ merge 1:1 region year using "./Data_Modified/population.dta", nogenerate
 merge 1:1 region year using "./Data_Modified/irrigation.dta", nogenerate 
 merge 1:1 region year using "./Data_Modified/fertilizer.dta", nogenerate 
 merge 1:1 region year using "./Data_Modified/cultivated_area.dta", nogenerate 
-merge m:1 region using "./Data_Modified/tenant_area_bought.dta", nogenerate  
+merge m:1 year using "./Data_Modified/total_tenant_area.dta", nogenerate  
 bysort region (year): gen tenant_area_change_in_1953 = tenant_area[3] - tenant_area[4]
 bysort region (year): gen share_tenant_area_change_in_1953 = tenant_area_change_in_1953 / tenant_area[3]
 bysort region (year): gen portion_tenant_change_in_1953 = tenant_area_change_in_1953 / total_cultivable_land[3]
@@ -187,10 +187,11 @@ gen after_portion_dry_area_change = after_reform * portion_dry_change_in_1953
 gen common_crop_ex_rice_value = common_crop_value - rice_total_value
 gen fruit_value = horticultural_crop_value - vegetable_value
 
+egen sugar_mean = mean(sugarcane_yield_per_ha)
+egen rice_mean = mean(rice_total_yield_per_ha)
 
 
 save "./Data_Modified/organized_data.dta", replace
-
 /*
 gen ln_rice_yield = ln(rice_yield)
 gen ln_rice_yield_per_ha = ln(rice_yield_per_ha)
